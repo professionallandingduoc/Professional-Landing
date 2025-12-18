@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Resultado DISC - Patrón</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 12px;
+      line-height: 1.5;
+      margin: 0;
+      padding: 40px 20px;
+      background: linear-gradient(90deg, #0a1929 0%, #16213e 25%, #1a2332 50%, #1e3a5f 75%, #0f1b2e 100%);
+      min-height: 100vh;
+      color: #e0e0e0;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+      /* Performance optimizations */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+    .container {
+      background: rgba(26, 35, 50, 0.95);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 212, 255, 0.2), 0 0 40px rgba(0, 212, 255, 0.1);
+      border: 2px solid rgba(0, 212, 255, 0.3);
+      max-width: 800px;
+      width: 100%;
+      margin: auto;
+      backdrop-filter: blur(10px);
+      box-sizing: border-box;
+      /* Performance optimizations */
+      contain: layout style paint;
+      transform: translateZ(0);
+    }
+    h1 {
+      text-align: center;
+      color: #00d4ff;
+      font-size: 14px;
+      margin-bottom: 30px;
+      font-weight: 600;
+      line-height: 1.5;
+      text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    }
+    h2 {
+      color: #00d4ff;
+      margin-top: 30px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      border-left: 4px solid #00d4ff;
+      padding-left: 15px;
+      line-height: 1.5;
+      font-weight: 600;
+      box-shadow: -4px 0 10px rgba(0, 212, 255, 0.3);
+    }
+    p {
+      margin-bottom: 15px;
+      color: #e0e0e0;
+      text-align: justify;
+      line-height: 1.5;
+      font-size: 12px;
+    }
+    /* Estilos para descripciones formateadas */
+    #descripcion,
+    #nivel_onboarding,
+    #aprendizajes_esperados {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 16px;
+      text-align: justify;
+      line-height: 1.5;
+      color: #e0e0e0;
+    }
+    
+    /* Destacar títulos de onboarding y patrones */
+    #nivel_onboarding strong,
+    #aprendizajes_esperados strong {
+      color: #00d4ff;
+      font-weight: 600;
+      text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+    }
+    
+    #descripcion strong {
+      color: #00d4ff;
+      font-weight: 600;
+      text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+    }
+    #descripcion {
+      margin-bottom: 20px;
+    }
+    #nivel_onboarding {
+      margin-bottom: 20px;
+    }
+    #aprendizajes_esperados {
+      margin-bottom: 20px;
+    }
+    .meta {
+      margin-top: 30px;
+      margin-bottom: 20px;
+      font-style: italic;
+      padding: 15px;
+      background: linear-gradient(135deg, rgba(26, 35, 50, 0.8), rgba(30, 58, 95, 0.8));
+      border-radius: 10px;
+      border-left: 4px solid #00d4ff;
+      box-shadow: -4px 0 10px rgba(0, 212, 255, 0.3);
+    }
+    code {
+      background: rgba(0, 212, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #00d4ff;
+      font-family: 'Courier New', monospace;
+      border: 1px solid rgba(0, 212, 255, 0.3);
+    }
+    .email-form {
+      margin-top: 40px;
+      padding: 30px;
+      background: linear-gradient(135deg, rgba(26, 35, 50, 0.8), rgba(30, 58, 95, 0.8));
+      border-radius: 15px;
+      border-left: 4px solid #00d4ff;
+      box-shadow: -4px 0 10px rgba(0, 212, 255, 0.3);
+    }
+    .email-form h2 {
+      margin-top: 0;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #e0e0e0;
+      font-weight: 500;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid rgba(0, 212, 255, 0.3);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: 'Times New Roman', Times, serif;
+      transition: border-color 0.2s ease;
+      /* Performance optimizations */
+      transform: translateZ(0);
+      background-color: rgba(30, 58, 95, 0.6);
+      color: #e0e0e0;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #00d4ff;
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+    }
+    .btn-send {
+      background: linear-gradient(135deg, #00d4ff, #00bcd4);
+      color: #0a1929;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-size: 20px;
+      font-family: 'Times New Roman', Times, serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      width: 100%;
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+      /* Performance optimizations */
+      transform: translateZ(0);
+      will-change: transform;
+    }
+    /* Disable hover on touch devices */
+    @media (hover: hover) and (pointer: fine) {
+      .btn-send:hover {
+        transform: translateY(-2px) translateZ(0);
+        box-shadow: 0 5px 15px rgba(0, 212, 255, 0.5), 0 0 25px rgba(0, 212, 255, 0.3);
+      }
+    }
+    .btn-send:active {
+      transform: translateY(0);
+    }
+    .btn-send:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .message {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 8px;
+      display: none;
+    }
+    .message.success {
+      background: rgba(0, 212, 255, 0.2);
+      color: #00d4ff;
+      border: 1px solid rgba(0, 212, 255, 0.4);
+      display: block;
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+    }
+    .message.error {
+      background: rgba(255, 100, 100, 0.2);
+      color: #ff6464;
+      border: 1px solid rgba(255, 100, 100, 0.4);
+      display: block;
+      box-shadow: 0 0 15px rgba(255, 100, 100, 0.3);
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+      body {
+        padding: 20px 10px;
+      }
+      
+      .container {
+        padding: 25px 20px;
+        border-radius: 15px;
+        /* Disable expensive backdrop-filter on mobile */
+        backdrop-filter: none;
+        background: rgba(26, 35, 50, 0.98);
+        /* Reduce box-shadow complexity */
+        box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        will-change: auto;
+      }
+      
+      h1 {
+        font-size: 14px;
+        margin-bottom: 20px;
+      }
+      
+      h2 {
+        font-size: 14px;
+        margin-top: 25px;
+        padding-left: 12px;
+      }
+      
+      p {
+        font-size: 12px;
+        margin-bottom: 12px;
+      }
+      
+      .logo-header {
+        margin-bottom: 20px;
+      }
+      
+      .logo-header div {
+        width: 100px !important;
+        height: 100px !important;
+      }
+      
+      .email-form {
+        margin-top: 30px;
+        padding: 20px;
+      }
+      
+      .email-form h2 {
+        font-size: 14px;
+      }
+      
+      .form-group input,
+      .form-group select {
+        font-size: 12px; /* Prevents zoom on iOS */
+        padding: 14px 15px;
+        -webkit-appearance: none;
+        appearance: none;
+      }
+      
+      .btn-send {
+        padding: 14px 20px;
+        font-size: 12px;
+        min-height: 48px; /* Touch-friendly button size */
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        will-change: auto;
+      }
+      
+      .meta {
+        padding: 12px;
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 15px 8px;
+      }
+      
+      .container {
+        padding: 20px 15px;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+      }
+      
+      h1 {
+        font-size: 14px;
+        margin-bottom: 15px;
+        line-height: 1.5;
+      }
+      
+      h2 {
+        font-size: 14px;
+        margin-top: 20px;
+        margin-bottom: 8px;
+        padding-left: 10px;
+        border-left-width: 3px;
+      }
+      
+      p {
+        font-size: 12px;
+        margin-bottom: 10px;
+        line-height: 1.5;
+      }
+      
+      .logo-header {
+        margin-bottom: 15px;
+      }
+      
+      .logo-header div {
+        width: 80px !important;
+        height: 80px !important;
+      }
+      
+      .email-form {
+        margin-top: 25px;
+        padding: 15px;
+      }
+      
+      .email-form h2 {
+        font-size: 14px;
+        margin-top: 0;
+      }
+      
+      .email-form p {
+        font-size: 12px;
+        margin-bottom: 15px;
+      }
+      
+      .form-group {
+        margin-bottom: 15px;
+      }
+      
+      .form-group label {
+        font-size: 12px;
+        margin-bottom: 6px;
+      }
+      
+      .form-group input,
+      .form-group select {
+        font-size: 12px; /* Prevents zoom on iOS */
+        padding: 12px 12px;
+        -webkit-appearance: none;
+        appearance: none;
+      }
+      
+      .btn-send {
+        padding: 14px 15px;
+        font-size: 12px;
+        min-height: 48px;
+        letter-spacing: 0.5px;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        will-change: auto;
+      }
+      
+      .message {
+        padding: 10px;
+        font-size: 12px;
+      }
+      
+      .meta {
+        padding: 10px;
+        font-size: 12px;
+        margin-top: 20px;
+        margin-bottom: 15px;
+      }
+      
+      code {
+        font-size: 12px;
+        padding: 2px 4px;
+        word-break: break-word;
+      }
+    }
+
+    /* Job offers section */
+    .job-offers-wrapper {
+      margin-top: 30px;
+      padding: 24px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(26, 35, 50, 0.8) 0%, rgba(30, 58, 95, 0.8) 100%);
+      border: 1px solid rgba(0, 212, 255, 0.4);
+      box-shadow: inset 0 1px 0 rgba(0, 212, 255, 0.2), 0 0 20px rgba(0, 212, 255, 0.1);
+    }
+
+    .job-offers-intro {
+      font-weight: 600;
+      color: #e0e0e0;
+      margin-bottom: 14px;
+    }
+
+    .job-offers-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .job-offers-btn {
+      padding: 14px 28px;
+      border-radius: 10px;
+      border: 2px solid #ff8c66;
+      background: linear-gradient(135deg, #ffa07a, #ff8c66);
+      color: white;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 6px 16px rgba(255, 140, 102, 0.35);
+    }
+
+    .job-offers-btn:hover:enabled {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(255, 140, 102, 0.45);
+    }
+
+    .job-offers-btn:disabled {
+      background: #dcdcdc;
+      border-color: #c0c0c0;
+      color: #7a7a7a;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .career-legend {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 12px;
+      background: rgba(0, 212, 255, 0.1);
+      color: #00d4ff;
+      font-weight: 600;
+      text-align: center;
+      border: 1px solid rgba(0, 212, 255, 0.4);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+    }
+
+    /* Job offers modal */
+    .job-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 12000;
+    }
+
+    .job-modal .modal-content {
+      background: linear-gradient(135deg, rgba(26, 35, 50, 0.95) 0%, rgba(30, 58, 95, 0.95) 100%);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 820px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 60px rgba(0, 212, 255, 0.3), 0 0 40px rgba(0, 212, 255, 0.2);
+      border: 2px solid rgba(0, 212, 255, 0.3);
+      animation: slideDown 0.3s ease;
+    }
+
+    .job-modal .modal-header {
+      background: linear-gradient(135deg, #00d4ff, #00bcd4);
+      color: #0a1929;
+      padding: 22px 28px;
+      border-radius: 18px 18px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+    }
+
+    .job-modal .modal-header h2 {
+      margin: 0;
+      border: none;
+      padding: 0;
+      color: white;
+    }
+
+    .job-modal .modal-close {
+      background: rgba(0, 212, 255, 0.2);
+      border: none;
+      color: #0a1929;
+      font-size: 30px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .job-modal .modal-close:hover {
+      background: rgba(0, 212, 255, 0.3);
+      transform: rotate(90deg);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+    }
+
+    .job-modal-body {
+      padding: 28px 32px 36px;
+    }
+
+    .job-offers-empty {
+      text-align: center;
+      color: #b0b0b0;
+      margin-bottom: 20px;
+    }
+
+    .job-offers-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .job-offer-card {
+      background: rgba(30, 58, 95, 0.6);
+      border-radius: 14px;
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      padding: 20px;
+      box-shadow: 0 12px 26px rgba(0, 212, 255, 0.2), 0 0 20px rgba(0, 212, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .job-offer-header-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .job-offer-header h3 {
+      margin: 0;
+      font-size: 1.1em;
+      color: #ffffff;
+      flex: 1;
+    }
+
+    .job-offer-status {
+      font-size: 0.75em;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .job-offer-status-activa {
+      background: rgba(0, 212, 255, 0.2);
+      color: #00d4ff;
+      border: 1px solid rgba(0, 212, 255, 0.4);
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+    }
+
+    .job-offer-status-inactiva {
+      background: rgba(255, 100, 100, 0.2);
+      color: #ff6464;
+      border: 1px solid rgba(255, 100, 100, 0.4);
+      box-shadow: 0 0 10px rgba(255, 100, 100, 0.3);
+    }
+
+    .job-offer-company {
+      font-size: 0.9em;
+      color: #00d4ff;
+      font-weight: 600;
+      text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+    }
+
+    .job-offer-summary {
+      color: #e0e0e0;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 8px 0;
+    }
+
+    .job-offer-contact {
+      margin: 8px 0;
+      padding: 10px;
+      background: rgba(26, 35, 50, 0.6);
+      border-radius: 8px;
+      border-left: 3px solid #00d4ff;
+      font-size: 0.9em;
+      box-shadow: -3px 0 8px rgba(0, 212, 255, 0.3);
+    }
+
+    .job-offer-contact-name {
+      display: block;
+      color: #e0e0e0;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .job-offer-contact-email {
+      display: block;
+      color: #00d4ff;
+      text-decoration: none;
+      word-break: break-all;
+      text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+    }
+
+    .job-offer-contact-email:hover {
+      text-decoration: underline;
+    }
+
+    .job-offer-meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .job-offer-tag {
+      background: rgba(0, 212, 255, 0.1);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.85em;
+      font-weight: 600;
+      color: #00bcd4;
+      border: 1px solid rgba(0, 212, 255, 0.3);
+    }
+
+    .job-offer-tag-salary {
+      background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+      color: #856404;
+      border: 1px solid #ffc107;
+    }
+
+    .job-offer-link {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border-radius: 10px;
+      background: #00d4ff;
+      color: #0a1929;
+      text-decoration: none;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 6px 18px rgba(0, 212, 255, 0.4), 0 0 20px rgba(0, 212, 255, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .job-offer-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px rgba(0, 212, 255, 0.5), 0 0 30px rgba(0, 212, 255, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .job-offers-wrapper {
+        padding: 18px;
+      }
+
+      .job-offers-btn {
+        width: 100%;
+      }
+
+      .job-offers-list {
+        grid-template-columns: 1fr;
+      }
+
+      .job-modal .modal-content {
+        max-width: 95%;
+      }
+
+      .job-offer-header-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .job-offer-status {
+        align-self: flex-start;
+      }
+    }
+
+    /* Prevent text overflow on very small screens */
+    @media (max-width: 360px) {
+      h1 {
+        font-size: 1.3em;
+      }
+      
+      h2 {
+        font-size: 1em;
+      }
+      
+      p {
+        font-size: 0.85em;
+      }
+      
+      .container {
+        padding: 15px 12px;
+      }
+
+      
+    }
+  </style>
+  <link rel="stylesheet" href="results.css" />
+  <!-- EmailJS SDK - Load asynchronously for better performance -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" async defer></script>
+</head>
+<body>
+  
+
+  <div class="container">
+    <h1 id="nombre">Patrón del Alentador</h1>
+
+    <h2>Descripción:</h2>
+    <p id="descripcion"></p>
+
+    <h2>Nivel de Professional Landing:</h2>
+    <p id="nivel_onboarding" style="white-space: pre-line;"></p>
+
+    <h2>Aprendizajes esperados:</h2>
+    <p id="aprendizajes_esperados" style="white-space: pre-line;"></p>
+
+    <!-- Email Form -->
+    <div class="email-form">
+      <h2>Recibir resultados por correo</h2>
+      <p style="margin-bottom: 20px;">Ingresa tu correo electrónico para recibir tus resultados del test DISC:</p>
+      <form id="emailForm">
+        <div class="form-group">
+          <label for="userNombre">Nombre: <span style="color: red;">*</span></label>
+          <input 
+            type="text" 
+            id="userNombre" 
+            name="userNombre" 
+            placeholder="Ingresa todos tus nombres" 
+            required
+          />
+          <small style="display: block; margin-top: 5px; color: #b0b0b0; font-size: 0.9em;">Ingrese todos sus nombres</small>
+        </div>
+        <div class="form-group">
+          <label for="userApellido">Apellido: <span style="color: red;">*</span></label>
+          <input 
+            type="text" 
+            id="userApellido" 
+            name="userApellido" 
+            placeholder="Ingresa ambos apellidos" 
+            required
+          />
+          <small style="display: block; margin-top: 5px; color: #b0b0b0; font-size: 0.9em;">Ingrese ambos apellidos</small>
+        </div>
+        <div class="form-group">
+          <label for="userRut">RUT: <span style="color: red;">*</span></label>
+          <input 
+            type="text" 
+            id="userRut" 
+            name="userRut" 
+            placeholder="12345678-9" 
+            required
+          />
+          <small style="display: block; margin-top: 5px; color: #b0b0b0; font-size: 0.9em;">Ingresar RUT sin puntos y con guión.</small>
+        </div>
+        <div class="form-group">
+          <label for="userEscuela">Escuela: <span style="color: red;">*</span></label>
+          <select 
+            id="userEscuela" 
+            name="userEscuela" 
+            required
+          >
+            <option value="">Selecciona una escuela</option>
+            <option value="Administración y Negocios">Administración y Negocios</option>
+            <option value="Informática y Telecomunicaciones">Informática y Telecomunicaciones</option>
+            <option value="Diseño">Diseño</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="userCarrera">Carrera: <span style="color: red;">*</span></label>
+          <select 
+            id="userCarrera" 
+            name="userCarrera" 
+            required
+            disabled
+          >
+            <option value="">Primero selecciona una escuela</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="userEmail">Correo electrónico: <span style="color: red;">*</span></label>
+          <input 
+            type="email" 
+            id="userEmail" 
+            name="userEmail" 
+            placeholder="tu@email.com" 
+            required
+          />
+        </div>
+        <button type="submit" class="btn-send" id="sendBtn">
+          Enviar resultados por correo
+        </button>
+        <div id="message" class="message"></div>
+      </form>
+    </div>
+    <div class="job-offers-wrapper">
+      <p class="job-offers-intro">A continuación, encontrarás ofertas laborales de potenciales prácticas profesionales acorde a tu carrera:</p>
+      <div class="job-offers-actions">
+        <button type="button" id="jobOffersBtn" class="job-offers-btn" disabled>Ofertas laborales</button>
+      </div>
+      <p class="career-legend">La relevancia de finalizar tu carrera en el tiempo que corresponde aumenta la probabilidad de lograr un trabajo pertinente.</p>
+    </div>
+  </div>
+
+  <div id="jobOffersModal" class="job-modal" role="dialog" aria-modal="true" aria-labelledby="jobOffersTitle" aria-hidden="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="jobOffersTitle">Ofertas laborales</h2>
+        <button class="modal-close" id="closeJobModal" aria-label="Cerrar ofertas">&times;</button>
+      </div>
+      <div class="job-modal-body">
+        <p id="jobOffersEmpty" class="job-offers-empty">Selecciona una carrera para visualizar oportunidades relacionadas.</p>
+        <div id="jobOffersList" class="job-offers-list" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="patrones.js"></script>
+  <script src="job-offers.js"></script>
+  <script>
+    // Función para calcular segmentos desde los resultados (fallback)
+    function calculateSegmentsFromResults() {
+      try {
+        // Intentar obtener resultados de múltiples fuentes
+        let resultsStr = null;
+        
+        // 1. Intentar de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const resultsParam = urlParams.get("results");
+        if (resultsParam) {
+          resultsStr = decodeURIComponent(resultsParam);
+          console.log("discResults obtenidos de la URL");
+        }
+        
+        // 2. Intentar de sessionStorage
+        if (!resultsStr) {
+          resultsStr = sessionStorage.getItem("discResults");
+          if (resultsStr) {
+            console.log("discResults obtenidos de sessionStorage");
+          }
+        }
+        
+        // 3. Intentar de localStorage
+        if (!resultsStr) {
+          resultsStr = localStorage.getItem("discResults");
+          if (resultsStr) {
+            console.log("discResults obtenidos de localStorage");
+          }
+        }
+        
+        console.log("discResults encontrados:", resultsStr);
+        
+        if (!resultsStr) {
+          console.error("No se encontró discResults en ninguna fuente");
+          return null;
+        }
+
+        const results = JSON.parse(resultsStr);
+        console.log("Resultados parseados:", results);
+        
+        // Verificar que los resultados tengan las propiedades necesarias
+        if (!results || typeof results.D === 'undefined' || typeof results.I === 'undefined' || 
+            typeof results.S === 'undefined' || typeof results.C === 'undefined') {
+          console.error("Los resultados no tienen las propiedades D, I, S, C:", results);
+          return null;
+        }
+
+        const displayOffset = { D: -4, I: -4, S: -5, C: -4 };
+        
+        const displayScores = {
+          D: results.D + displayOffset.D,
+          I: results.I + displayOffset.I,
+          S: results.S + displayOffset.S,
+          C: results.C + displayOffset.C
+        };
+        
+        console.log("Display scores calculados:", displayScores);
+
+        // Copiar las funciones de cálculo de segmentos desde disc.js
+        const scoreToIntensityMap = {
+          D: {
+            28: 28, 27: 12, 26: null, 25: 9, 24: 8, 23: 7, 22: 6, 21: 5, 20: 4,
+            19: 3, 18: null, 17: 2, 16: 1, 15: 0, 14: 0, 13: null, 12: -1,
+            11: -2, 10: null, 9: -3, 8: -4, 7: -5, 6: -6, 5: -7, 4: -8,
+            3: null, 2: -11, 1: -28
+          },
+          I: {
+            28: 28, 27: 10, 26: null, 25: 7, 24: 6, 23: 5, 22: 4, 21: null, 20: 3,
+            19: null, 18: 2, 17: null, 16: 1, 15: 0, 14: null, 13: -1, 12: -2,
+            11: null, 10: -3, 9: null, 8: -4, 7: -5, 6: -6, 5: -7, 4: -8,
+            3: null, 2: -11, 1: -28
+          },
+          S: {
+            28: 28, 27: 10, 26: null, 25: 8, 24: 7, 23: 6, 22: 4, 21: 3, 20: 2,
+            19: 1, 18: null, 17: 0, 16: -1, 15: -2, 14: null, 13: -3, 12: -4,
+            11: -5, 10: null, 9: -6, 8: -7, 7: -8, 6: -9, 5: -10, 4: -11,
+            3: null, 2: -13, 1: -28
+          },
+          C: {
+            28: 28, 27: 11, 26: null, 25: 9, 24: 8, 23: 7, 22: 6, 21: 5, 20: 4,
+            19: null, 18: 3, 17: null, 16: 2, 15: 1, 14: null, 13: 0, 12: -1,
+            11: null, 10: -2, 9: null, 8: -3, 7: -4, 6: null, 5: -5, 4: -6,
+            3: null, 2: -11, 1: -28
+          }
+        };
+
+        function getIntensityFromScore(score, type) {
+          const map = scoreToIntensityMap[type];
+          if (!map) return 15;
+
+          let closestIntensity = 15;
+          let minDiff = Infinity;
+
+          for (const [intensity, mappedScore] of Object.entries(map)) {
+            if (mappedScore === null) continue;
+            const diff = Math.abs(mappedScore - score);
+            if (diff < minDiff) {
+              minDiff = diff;
+              closestIntensity = parseInt(intensity);
+            }
+            if (mappedScore === score) return parseInt(intensity);
+          }
+
+          return closestIntensity;
+        }
+
+        function getSegmentFromIntensity(intensity, type) {
+          const map = {
+            D: {
+              28: 7, 27: 7, 26: 7, 25: 7,
+              24: 6, 23: 6, 22: 6, 21: 6, 
+              20: 5, 19: 5, 18: 5, 17: 5,
+              16: 4, 15: 4, 14: 4, 13: 4,
+              12: 3, 11: 3, 10: 3, 9: 3,
+              8: 2, 7: 2, 6: 2, 5: 2,
+              4: 1, 3: 1, 2: 1, 1: 1
+            },
+            I: {
+              28: 7, 27: 7, 26: 6, 25: 7,
+              24: 6, 23: 6, 22: 6, 21: 6, 
+              20: 5, 19: 5, 18: 5, 17: 5,
+              16: 4, 15: 4, 14: 4, 13: 4,
+              12: 3, 11: 3, 10: 3, 9: 3,
+              8: 2, 7: 2, 6: 2, 5: 2,
+              4: 1, 3: 1, 2: 1, 1: 1
+            },
+            S: {
+              28: 7, 27: 7, 26: 6, 25: 7,
+              24: 6, 23: 6, 22: 6, 21: 6, 
+              20: 5, 19: 5, 18: 5, 17: 5,
+              16: 4, 15: 4, 14: 4, 13: 4,
+              12: 3, 11: 3, 10: 3, 9: 3,
+              8: 2, 7: 2, 6: 2, 5: 2,
+              4: 1, 3: 1, 2: 1, 1: 1
+            },
+            C: {
+              28: 7, 27: 7, 26: 6, 25: 7,
+              24: 6, 23: 6, 22: 6, 21: 6, 
+              20: 5, 19: 5, 18: 5, 17: 5,
+              16: 4, 15: 4, 14: 4, 13: 4,
+              12: 3, 11: 3, 10: 3, 9: 3,
+              8: 2, 7: 2, 6: 2, 5: 2,
+              4: 1, 3: 1, 2: 1, 1: 1
+            }
+          };
+          return map[type]?.[intensity] ?? 1;
+        }
+
+        function getSegmentFromScore(score, type) {
+          const intensity = getIntensityFromScore(score, type);
+          const segment = getSegmentFromIntensity(intensity, type);
+          console.log(`  ${type}: score=${score}, intensity=${intensity}, segment=${segment}`);
+          return segment;
+        }
+
+        const segments = {
+          D: getSegmentFromScore(displayScores.D, 'D'),
+          I: getSegmentFromScore(displayScores.I, 'I'),
+          S: getSegmentFromScore(displayScores.S, 'S'),
+          C: getSegmentFromScore(displayScores.C, 'C')
+        };
+        
+        console.log("Segmentos calculados exitosamente:", segments);
+        return segments;
+      } catch (error) {
+        console.error("Error calculando segmentos:", error);
+        console.error("Stack trace:", error.stack);
+        return null;
+      }
+    }
+
+    // Función para buscar el patrón según el código de 4 dígitos
+    function findPatronByCode(code) {
+      if (!window.patrones || !Array.isArray(window.patrones)) {
+        console.error("No se encontraron patrones o no es un array");
+        return null;
+      }
+
+      console.log("Buscando código:", code, "en", window.patrones.length, "patrones");
+
+      // Buscar en cada patrón si el código está en su lista de códigos
+      for (let i = 0; i < window.patrones.length; i++) {
+        const patron = window.patrones[i];
+        if (patron && patron.codigo) {
+          // Dividir los códigos por comas y espacios, y buscar coincidencia exacta
+          const codigos = patron.codigo.split(/[,\s]+/).filter(c => c.trim() !== '');
+          
+          // Debug: mostrar algunos códigos del primer patrón para verificar
+          if (i === 0 && codigos.length > 0) {
+            console.log("Ejemplo de códigos del primer patrón (primeros 5):", codigos.slice(0, 5));
+          }
+          
+          if (codigos.includes(code)) {
+            console.log("✓ Patrón encontrado en índice", i, ":", patron.nombre);
+            console.log("  Código buscado:", code, "coincide con uno de los códigos del patrón");
+            return patron;
+          }
+        }
+      }
+      
+      console.log("✗ No se encontró patrón para código:", code);
+      console.log("  Verificando códigos disponibles en los primeros 3 patrones...");
+      for (let i = 0; i < Math.min(3, window.patrones.length); i++) {
+        const patron = window.patrones[i];
+        if (patron && patron.codigo) {
+          const codigos = patron.codigo.split(/[,\s]+/).filter(c => c.trim() !== '').slice(0, 10);
+          console.log(`  Patrón ${i + 1} (${patron.nombre}): primeros códigos:`, codigos.join(", "));
+        }
+      }
+      return null;
+    }
+
+    // Obtener los segmentos de localStorage o calcularlos
+    function loadPatron() {
+      try {
+        // Verificar si localStorage está disponible
+        if (typeof(Storage) === "undefined") {
+          throw new Error("localStorage no está disponible en este navegador.");
+        }
+        
+        // Verificar el protocolo
+        console.log("Protocolo actual:", window.location.protocol);
+        if (window.location.protocol === "file:") {
+          console.warn("Advertencia: Se está usando el protocolo file://. Algunos navegadores pueden tener restricciones con localStorage.");
+        }
+        
+        // Esperar a que patrones.js se cargue
+        if (!window.patrones) {
+          console.log("Esperando a que se cargue patrones.js...");
+          setTimeout(loadPatron, 100);
+          return;
+        }
+
+        // Listar todas las claves en localStorage para debug
+        console.log("Todas las claves en localStorage:", Object.keys(localStorage));
+        console.log("Todas las claves en sessionStorage:", Object.keys(sessionStorage || {}));
+        
+        let segments = null;
+        
+        // 1. Intentar leer de los parámetros de la URL primero (más confiable con file://)
+        const urlParams = new URLSearchParams(window.location.search);
+        const segmentsParam = urlParams.get("segments");
+        if (segmentsParam) {
+          try {
+            segments = JSON.parse(decodeURIComponent(segmentsParam));
+            console.log("✓ Segmentos obtenidos de la URL:", segments);
+            // Store segments globally for email functionality
+            window.currentSegments = segments;
+            // Guardar en localStorage y sessionStorage para futuras referencias
+            try {
+              localStorage.setItem("discSegments", JSON.stringify(segments));
+              sessionStorage.setItem("discSegments", JSON.stringify(segments));
+            } catch (e) {
+              console.warn("No se pudieron guardar los segmentos:", e);
+            }
+          } catch (e) {
+            console.error("Error parseando segmentos de la URL:", e);
+          }
+        }
+        
+        // 2. Si no hay en la URL, intentar leer de sessionStorage
+        if (!segments) {
+          const segmentsStr = sessionStorage.getItem("discSegments");
+          if (segmentsStr) {
+            try {
+              segments = JSON.parse(segmentsStr);
+              console.log("✓ Segmentos encontrados en sessionStorage:", segments);
+              // Store segments globally for email functionality
+              window.currentSegments = segments;
+            } catch (e) {
+              console.error("Error parseando segmentos de sessionStorage:", e);
+            }
+          }
+        }
+        
+        // 3. Si no hay en sessionStorage, intentar leer de localStorage
+        if (!segments) {
+          const segmentsStr = localStorage.getItem("discSegments");
+          if (segmentsStr) {
+            try {
+              segments = JSON.parse(segmentsStr);
+              console.log("✓ Segmentos encontrados en localStorage:", segments);
+              // Store segments globally for email functionality
+              window.currentSegments = segments;
+            } catch (e) {
+              console.error("Error parseando segmentos de localStorage:", e);
+            }
+          }
+        }
+
+        // 4. Si no hay segmentos guardados, intentar calcularlos desde los resultados
+        if (!segments) {
+          console.log("No hay segmentos guardados, calculando desde resultados...");
+          
+          // Intentar obtener resultados de la URL
+          const resultsParam = urlParams.get("results");
+          if (resultsParam) {
+            try {
+              const results = JSON.parse(decodeURIComponent(resultsParam));
+              console.log("Resultados obtenidos de la URL:", results);
+              // Guardar en localStorage
+              try {
+                localStorage.setItem("discResults", JSON.stringify(results));
+                sessionStorage.setItem("discResults", JSON.stringify(results));
+              } catch (e) {
+                console.warn("No se pudieron guardar los resultados:", e);
+              }
+            } catch (e) {
+              console.error("Error parseando resultados de la URL:", e);
+            }
+          }
+          
+          segments = calculateSegmentsFromResults();
+          if (segments) {
+            console.log("✓ Segmentos calculados exitosamente:", segments);
+            // Store segments globally for email functionality
+            window.currentSegments = segments;
+            // Guardar los segmentos calculados para futuras referencias
+            try {
+              localStorage.setItem("discSegments", JSON.stringify(segments));
+              sessionStorage.setItem("discSegments", JSON.stringify(segments));
+            } catch (e) {
+              console.warn("No se pudieron guardar los segmentos calculados:", e);
+            }
+          } else {
+            console.error("✗ No se pudieron calcular los segmentos desde los resultados");
+            // Verificar qué hay en localStorage
+            console.log("Contenido de localStorage:");
+            console.log("  discResults:", localStorage.getItem("discResults"));
+            console.log("  discSegments:", localStorage.getItem("discSegments"));
+            console.log("  discDisplayScores:", localStorage.getItem("discDisplayScores"));
+            console.log("Contenido de sessionStorage:");
+            console.log("  discResults:", sessionStorage.getItem("discResults"));
+            console.log("  discSegments:", sessionStorage.getItem("discSegments"));
+          }
+        }
+
+        if (!segments) {
+          throw new Error("No se pudieron obtener los segmentos. Por favor, complete el test nuevamente.");
+        }
+        
+        // Formar el código de 4 dígitos: D, I, S, C
+        const code = `${segments.D}${segments.I}${segments.S}${segments.C}`;
+        
+        console.log("Buscando patrón con código:", code);
+        console.log("Segmentos:", segments);
+
+        // Store segments globally for email functionality
+        window.currentSegments = segments;
+
+        // Buscar el patrón
+        const patron = findPatronByCode(code);
+        
+        // Store patron data globally for email functionality
+        if (patron) {
+          window.currentPatronData = patron;
+        }
+        
+        if (!patron) {
+          // Si no se encuentra, mostrar un mensaje de error más amigable
+          const container = document.querySelector(".container");
+          container.innerHTML = `
+            <h1>Patrón no encontrado</h1>
+            <p>No se encontró un patrón para el código <code>${code}</code>.</p>
+            <div class="meta">
+              <p><strong>Segmentos obtenidos:</strong></p>
+              <p>D: ${segments.D}, I: ${segments.I}, S: ${segments.S}, C: ${segments.C}</p>
+              <p><strong>Código formado:</strong> ${code}</p>
+              <p><strong>Total de patrones disponibles:</strong> ${window.patrones ? window.patrones.length : 0}</p>
+            </div>
+            <p style="margin-top: 20px;">
+              <a href="index.html" style="color: #00d4ff; text-decoration: underline; text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);">Volver al test</a>
+            </p>
+          `;
+          return;
+        }
+
+        // Renderizar el patrón encontrado
+        console.log("Patrón encontrado:", patron.nombre);
+        
+        // Mapear los campos del patrón a los elementos del DOM
+        const fieldMapping = {
+          nombre: "nombre",
+          emociones: "emociones",
+          meta: "meta",
+          juzga_a_los_demas_por: "juzga_a_los_demas_por",
+          influye_en_los_demas_mediante: "influye_en_los_demas_mediante",
+          valor_para_la_organizacion: "valor_para_la_organizacion",
+          abusa_de: "abusa_de",
+          bajo_presion: "bajo_presion",
+          teme: "teme",
+          seria_mas_eficaz_si: "seria_mas_eficaz_si",
+          descripcion: "descripcion",
+          nivel_onboarding: "nivel_onboarding",
+          aprendizajes_esperados: "aprendizajes_esperados"
+        };
+
+        // Función para formatear niveles de onboarding
+        function formatNivelOnboarding(text) {
+          if (!text) return '';
+          // Separar por saltos de línea y formatear cada nivel
+          const niveles = text.split('\n').map(n => n.trim()).filter(n => n);
+          return niveles.map(nivel => {
+            // Buscar patrones como "Nivel X: Nombre" o "Nivel X: Nombre."
+            const match = nivel.match(/^(Nivel\s+\d+):\s*(.+?)(\.)?$/);
+            if (match) {
+              const nombreNivel = match[2].replace(/\.$/, ''); // Remover punto final si existe
+              return `<strong>${match[1]}:</strong> ${nombreNivel}`;
+            }
+            return nivel;
+          }).join('<br><br>');
+        }
+
+        // Función para formatear aprendizajes esperados
+        function formatAprendizajesEsperados(text) {
+          if (!text) return '';
+          // Separar por saltos de línea
+          const partes = text.split('\n').filter(p => p.trim());
+          return partes.map((parte, index) => {
+            // Buscar subtítulos como "Explorador:", "Líder:", "Pasante:"
+            const match = parte.match(/^([A-Za-záéíóúÁÉÍÓÚñÑ\s]+):\s*(.+)$/);
+            if (match) {
+              const titulo = match[1].trim();
+              // Verificar si es un subtítulo conocido
+              if (titulo === 'Explorador' || titulo === 'Líder' || titulo === 'Pasante') {
+                return `<strong>${titulo}:</strong> ${match[2]}`;
+              }
+            }
+            return parte;
+          }).join('<br><br>');
+        }
+
+        // Función para formatear descripción (agregar negritas donde sea necesario)
+        function formatDescripcion(text) {
+          if (!text) return '';
+          // Agregar negritas a términos clave (puedes ajustar estos patrones)
+          let formatted = text;
+          // Negritas para nombres de patrones y términos importantes
+          formatted = formatted.replace(/\b(Alentador|Realizador|Perfeccionista|Creativo|Objetivo|Persuasivo|Especialista|Paciente|Inspirador|Ejecutor|Analista|Pionero|Arquitecto|Diplomático|Estratega)\b/g, '<strong>$1</strong>');
+          return formatted;
+        }
+
+        // Aplicar formateo a los campos específicos
+        for (const [key, elementId] of Object.entries(fieldMapping)) {
+          const el = document.getElementById(elementId);
+          if (el && patron[key] !== undefined) {
+            if (key === 'nivel_onboarding') {
+              el.innerHTML = formatNivelOnboarding(patron[key]);
+            } else if (key === 'aprendizajes_esperados') {
+              el.innerHTML = formatAprendizajesEsperados(patron[key]);
+            } else if (key === 'descripcion') {
+              el.innerHTML = formatDescripcion(patron[key]);
+            } else {
+              el.textContent = patron[key];
+            }
+          }
+        }
+
+      } catch (error) {
+        console.error("Error al cargar el patrón:", error);
+        const container = document.querySelector(".container");
+        container.innerHTML = `
+          <h1>Error al cargar el patrón</h1>
+          <p>${error.message || "Ocurrió un error al procesar los resultados del test."}</p>
+          <p style="margin-top: 20px;">
+            <a href="index.html" style="color: #00d4ff; text-decoration: underline; text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);">Volver al test</a>
+          </p>
+        `;
+      }
+    }
+
+    // Cargar el patrón cuando la página esté lista
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadPatron);
+    } else {
+      loadPatron();
+    }
+
+    // EmailJS Configuration
+    // TODO: Replace these with your actual EmailJS credentials
+    // Get them from https://www.emailjs.com/
+    const EMAILJS_SERVICE_ID = 'service_rnwjyat'; // Replace with your EmailJS service ID
+    const EMAILJS_TEMPLATE_ID = 'template_toa9xet'; // Replace with your EmailJS template ID
+    const EMAILJS_PUBLIC_KEY = 'ESxmjvGP_bv4tcBkc'; // Replace with your EmailJS public key
+
+    // Initialize EmailJS when script is loaded
+    function initEmailJS() {
+      if (typeof emailjs !== 'undefined') {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+        console.log('EmailJS inicializado correctamente');
+      } else {
+        console.warn('EmailJS aún no está cargado, reintentando...');
+        setTimeout(initEmailJS, 100);
+      }
+    }
+    
+    // Start EmailJS initialization
+    initEmailJS();
+
+    // Store patron data globally for email sending (will be set by loadPatron)
+    window.currentPatronData = null;
+    window.currentSegments = null;
+
+    // Carreras por escuela
+    const carrerasPorEscuela = {
+      'Informática y Telecomunicaciones': [
+        'Ingeniería en Informática',
+        'Analista Programador',
+        'Ingeniería en Redes y Telecomunicaciones'
+      ],
+      'Administración y Negocios': [
+        'Ingeniería en Marketing Digital',
+        'Auditoría',
+        'Ingeniería en Gestión Logística',
+        'Ingeniería en Administración Mención Gestión de Personas',
+        'Ingeniería en Administración Mención Finanzas',
+        'Técnico en Administración',
+        'Técnico en Gestión Logística'
+      ],
+      'Diseño': [
+        'Diseño Industrial e Innovación en Productos',
+        'Diseño Gráfico',
+        'Diseño de Ambientes'
+      ]
+    };
+
+    // Function to format patron data for email
+    function formatPatronForEmail(nombre, apellido, rut, escuela, carrera, patron, segments) {
+      if (!patron) return '';
+      
+      let emailContent = `
+RESULTADOS DEL TEST DISC
+
+Datos del estudiante:
+Nombre: ${nombre || 'N/A'}
+Apellido: ${apellido || 'N/A'}
+RUT: ${rut || 'N/A'}
+Escuela: ${escuela || 'N/A'}
+Carrera: ${carrera || 'N/A'}
+
+Patrón: ${patron.nombre || 'N/A'}
+
+Descripción:
+${patron.descripcion || 'N/A'}
+
+Nivel de Onboarding:
+${patron.nivel_onboarding || 'N/A'}
+
+Aprendizajes esperados:
+${patron.aprendizajes_esperados || 'N/A'}
+
+---
+Segmentos DISC: D=${segments?.D || 'N/A'}, I=${segments?.I || 'N/A'}, S=${segments?.S || 'N/A'}, C=${segments?.C || 'N/A'}
+Código: ${segments ? `${segments.D}${segments.I}${segments.S}${segments.C}` : 'N/A'}
+      `;
+
+      // Add additional fields if they exist
+      if (patron.emociones) {
+        emailContent += `\n\nEmociones:\n${patron.emociones}`;
+      }
+      if (patron.meta) {
+        emailContent += `\n\nMeta:\n${patron.meta}`;
+      }
+      if (patron.valor_para_la_organizacion) {
+        emailContent += `\n\nValor para la organización:\n${patron.valor_para_la_organizacion}`;
+      }
+
+      return emailContent.trim();
+    }
+
+    // Function to send email via EmailJS
+    async function sendEmail(email, nombre, apellido, rut, escuela, carrera, patron, segments) {
+      try {
+        const templateParams = {
+          email: email,
+          nombre: nombre || 'N/A',
+          apellido: apellido || 'N/A',
+          rut: rut || 'N/A',
+          escuela: escuela || 'N/A',
+          carrera: carrera || 'N/A',
+          patron_name: patron.nombre || 'N/A',
+          nivel_onboarding: patron.nivel_onboarding || 'N/A',
+          full_content: formatPatronForEmail(nombre, apellido, rut, escuela, carrera, patron, segments),
+          segments: segments ? `D: ${segments.D}, I: ${segments.I}, S: ${segments.S}, C: ${segments.C}` : 'N/A',
+          code: segments ? `${segments.D}${segments.I}${segments.S}${segments.C}` : 'N/A'
+        };
+
+        const response = await emailjs.send(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_TEMPLATE_ID,
+          templateParams
+        );
+
+        // ALSO send the data to Google Sheets
+          fetch("https://script.google.com/macros/s/AKfycbyCf3GMsuBySBpHdeul_b93kkySX7s9EcjiIXsdQTqngFw-vi46LwA1i7egnsPmjtXi/exec", {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(templateParams)
+          });
+
+        return { success: true, response };
+      } catch (error) {
+        console.error('Error sending email:', error);
+        return { success: false, error };
+      }
+    }
+
+    // Function to setup escuela/carrera filtering
+    function setupEscuelaCarreraFilter() {
+      const escuelaSelect = document.getElementById('userEscuela');
+      const carreraSelect = document.getElementById('userCarrera');
+
+      console.log('Buscando elementos del formulario...');
+      console.log('escuelaSelect:', escuelaSelect);
+      console.log('carreraSelect:', carreraSelect);
+
+      // Filter carreras based on selected escuela
+      if (escuelaSelect && carreraSelect) {
+        console.log('✓ Event listeners configurados para escuela/carrera');
+        
+        escuelaSelect.addEventListener('change', function() {
+          console.log('✓ Escuela cambiada:', this.value);
+          const selectedEscuela = this.value;
+          const carreraSelect = document.getElementById('userCarrera');
+          
+          // Clear carrera selection
+          carreraSelect.value = '';
+          
+          if (!selectedEscuela) {
+            // No escuela selected, disable carrera
+            carreraSelect.disabled = true;
+            carreraSelect.innerHTML = '<option value="">Primero selecciona una escuela</option>';
+            carreraSelect.dispatchEvent(new Event('change'));
+            return;
+          }
+          
+          // Enable carrera and populate options
+          carreraSelect.disabled = false;
+          const carreras = carrerasPorEscuela[selectedEscuela] || [];
+          
+          console.log('Carreras encontradas para', selectedEscuela, ':', carreras);
+          
+          if (carreras.length === 0) {
+            console.warn('No se encontraron carreras para la escuela:', selectedEscuela);
+            carreraSelect.innerHTML = '<option value="">No hay carreras disponibles</option>';
+            return;
+          }
+          
+          // Build options
+          let optionsHTML = '<option value="">Selecciona una carrera</option>';
+          carreras.forEach(function(carrera) {
+            optionsHTML += `<option value="${carrera}">${carrera}</option>`;
+          });
+          
+          carreraSelect.innerHTML = optionsHTML;
+          console.log('✓ Carreras cargadas en el select:', carreras.length, 'opciones');
+          carreraSelect.dispatchEvent(new Event('change'));
+        });
+      } else {
+        console.error('✗ No se encontraron los elementos escuelaSelect o carreraSelect');
+        console.log('escuelaSelect:', escuelaSelect);
+        console.log('carreraSelect:', carreraSelect);
+        console.log('Formulario completo:', document.getElementById('emailForm'));
+      }
+    }
+
+    // Handle form submission and escuela/carrera filtering
+    function initFormHandlers() {
+      const emailForm = document.getElementById('emailForm');
+      const sendBtn = document.getElementById('sendBtn');
+      const messageDiv = document.getElementById('message');
+      
+      // Setup escuela/carrera filtering
+      setupEscuelaCarreraFilter();
+
+      if (emailForm) {
+        emailForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          // Get form values
+          const nombreInput = document.getElementById('userNombre');
+          const apellidoInput = document.getElementById('userApellido');
+          const rutInput = document.getElementById('userRut');
+          const escuelaInput = document.getElementById('userEscuela');
+          const carreraInput = document.getElementById('userCarrera');
+          const emailInput = document.getElementById('userEmail');
+          
+          const nombre = nombreInput.value.trim();
+          const apellido = apellidoInput.value.trim();
+          const rut = rutInput.value.trim();
+          const escuela = escuelaInput.value.trim();
+          const carrera = carreraInput.value.trim();
+          const email = emailInput.value.trim();
+
+          // Validate required fields
+          if (!nombre) {
+            showMessage('Por favor, ingresa tu nombre completo.', 'error');
+            nombreInput.focus();
+            return;
+          }
+
+          if (!apellido) {
+            showMessage('Por favor, ingresa tus apellidos.', 'error');
+            apellidoInput.focus();
+            return;
+          }
+
+          if (!rut) {
+            showMessage('Por favor, ingresa tu RUT.', 'error');
+            rutInput.focus();
+            return;
+          }
+
+          if (!escuela) {
+            showMessage('Por favor, selecciona una escuela.', 'error');
+            escuelaInput.focus();
+            return;
+          }
+
+          if (!carrera) {
+            showMessage('Por favor, selecciona una carrera.', 'error');
+            carreraInput.focus();
+            return;
+          }
+
+          if (!email) {
+            showMessage('Por favor, ingresa un correo electrónico válido.', 'error');
+            emailInput.focus();
+            return;
+          }
+
+          // Validate email format
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+            showMessage('Por favor, ingresa un correo electrónico válido.', 'error');
+            emailInput.focus();
+            return;
+          }
+
+          // Check if patron data is available
+          if (!window.currentPatronData) {
+            showMessage('Error: No se encontraron los datos del patrón. Por favor, recarga la página.', 'error');
+            return;
+          }
+
+          // Disable button and show loading state
+          sendBtn.disabled = true;
+          sendBtn.textContent = 'Enviando...';
+          hideMessage();
+
+          // Send email
+          const result = await sendEmail(email, nombre, apellido, rut, escuela, carrera, window.currentPatronData, window.currentSegments);
+
+          // Re-enable button
+          sendBtn.disabled = false;
+          sendBtn.textContent = 'Enviar resultados por correo';
+
+          if (result.success) {
+            showMessage('¡Éxito! Los resultados han sido enviados a tu correo electrónico.', 'success');
+            // Clear all form inputs
+            nombreInput.value = '';
+            apellidoInput.value = '';
+            rutInput.value = '';
+            escuelaInput.value = '';
+            carreraInput.value = '';
+            carreraInput.disabled = true;
+            carreraInput.innerHTML = '<option value="">Primero selecciona una escuela</option>';
+            emailInput.value = '';
+            carreraInput.dispatchEvent(new Event('change'));
+          } else {
+            showMessage('Error al enviar el correo. Por favor, verifica tu conexión e intenta nuevamente.', 'error');
+            console.error('EmailJS error:', result.error);
+          }
+        });
+      }
+    }
+
+    // Initialize form handlers when DOM is ready
+    // Wait a bit to ensure loadPatron has finished modifying the DOM
+    function initFormHandlersDelayed() {
+      // Small delay to ensure DOM is fully ready
+      setTimeout(function() {
+        console.log('Inicializando handlers del formulario...');
+        initFormHandlers();
+      }, 100);
+    }
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        // Wait for loadPatron to potentially finish
+        setTimeout(initFormHandlersDelayed, 200);
+      });
+    } else {
+      // DOM is already loaded, but wait a bit for loadPatron
+      initFormHandlersDelayed();
+    }
+
+    // Helper functions for messages
+    function showMessage(text, type) {
+      const messageDiv = document.getElementById('message');
+      if (messageDiv) {
+        messageDiv.textContent = text;
+        messageDiv.className = `message ${type}`;
+      }
+    }
+
+    function hideMessage() {
+      const messageDiv = document.getElementById('message');
+      if (messageDiv) {
+        messageDiv.className = 'message';
+      }
+    }
+
+  </script>
+</body>
+</html>
