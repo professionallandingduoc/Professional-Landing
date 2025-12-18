@@ -746,7 +746,7 @@
       <p style="margin-bottom: 20px;">Ingresa tu correo electrónico para recibir tus resultados del test DISC:</p>
       <form id="emailForm">
         <div class="form-group">
-          <label for="userNombre">Nombre: <span style="color: red;">*</span></label>
+          <label for="userNombre">Nombres: <span style="color: red;">*</span></label>
           <input 
             type="text" 
             id="userNombre" 
@@ -757,7 +757,7 @@
           <small style="display: block; margin-top: 5px; color: #b0b0b0; font-size: 0.9em;">Ingrese todos sus nombres</small>
         </div>
         <div class="form-group">
-          <label for="userApellido">Apellido: <span style="color: red;">*</span></label>
+          <label for="userApellido">Apellidos: <span style="color: red;">*</span></label>
           <input 
             type="text" 
             id="userApellido" 
@@ -1416,15 +1416,34 @@ Código: ${segments ? `${segments.D}${segments.I}${segments.S}${segments.C}` : '
     // Function to send email via EmailJS
     async function sendEmail(email, nombre, apellido, rut, escuela, carrera, patron, segments) {
       try {
+        // Format current date and time
+        const now = new Date();
+        const timeOptions = { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric', 
+          hour: '2-digit', 
+          minute: '2-digit',
+          timeZone: 'America/Santiago'
+        };
+        const formattedTime = now.toLocaleDateString('es-CL', timeOptions);
+        
+        // Combine nombre and apellido for full name
+        const fullName = `${nombre || ''} ${apellido || ''}`.trim() || 'N/A';
+        
         const templateParams = {
           email: email,
           nombre: nombre || 'N/A',
           apellido: apellido || 'N/A',
+          name: fullName, // Full name for template
+          time: formattedTime, // Formatted date/time for template
           rut: rut || 'N/A',
           escuela: escuela || 'N/A',
           carrera: carrera || 'N/A',
           patron_name: patron.nombre || 'N/A',
+          patron_description: patron.descripcion || 'N/A', // Description for template
           nivel_onboarding: patron.nivel_onboarding || 'N/A',
+          aprendizajes_esperados: patron.aprendizajes_esperados || 'N/A', // Aprendizajes esperados for template
           full_content: formatPatronForEmail(nombre, apellido, rut, escuela, carrera, patron, segments),
           segments: segments ? `D: ${segments.D}, I: ${segments.I}, S: ${segments.S}, C: ${segments.C}` : 'N/A',
           code: segments ? `${segments.D}${segments.I}${segments.S}${segments.C}` : 'N/A'
