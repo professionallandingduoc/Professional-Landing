@@ -1,98 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <title>Professional Landing Test</title>
+  <title>Professional Landing - Inicio</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="home.css">
 </head>
 <body>
+
   <div class="logo-header">
-  <div class="logo-container">
-    <img src="banner.png" alt="Professional Landing Banner - Competencias y Actitudes Globales" class="banner-image">
-  </div>
-
-  <div id="welcomeModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Bienvenido/a al Professional Landing Test</h2>
-        <button class="modal-close" id="closeModal">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p><strong>Estimado/a estudiante,</strong></p>
-
-        <p>Le damos la bienvenida al Test de Proyección Laboral de Duoc UC Plaza Oeste que permite identificar patrones de personalidad.</p>
-
-        <p>Para ello, contará con <strong>40 minutos</strong> para realizar el formulario. Seleccione la cualidad que le represente en <strong>mayor</strong> y <strong>menor</strong> grado en cada uno de los 28 grupos. Finalmente, seleccione la opción <strong>“Enviar respuestas”</strong>.</p>
-
-        <p>Al finalizar, ingrese sus datos para recibir los resultados a su correo, incluyendo:</p>
-
-        <ul style="list-style: none; padding-left: 0;">
-
-          <li>Patrón de personalidad.</li>
-
-          <li>Descripción con rasgos e implicaciones.</li>
-
-          <li>Nivel(es) de Professional Landing a cursar.</li>
-
-          <li>Aprendizajes esperados por nivel.</li>
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <button class="modal-button" id="startTestBtn">Comenzar Test</button>
-      </div>
+    <div class="logo-container">
+      <img src="banner.png" alt="Professional Landing Banner" class="banner-image">
     </div>
   </div>
 
-  <div class="container">
-    <p class="subtitle" style="text-align: center;"><strong>Seleccione</strong> la cualidad que le <strong>represente</strong> en <strong>mayor</strong> y <strong>menor</strong> grado en cada uno de los 28 grupos.</p>
+  <nav class="main-nav">
+    <a href="test.html" class="nav-button">Cuestionario DISC</a>
+    <a href="#" class="nav-button disabled">Horarios (Próximamente)</a>
+    <a href="#" class="nav-button disabled">Inscripciones (Próximamente)</a>
+  </nav>
 
-    <form id="discForm"></form>
-    <div class="button-container">
-      <button type="button" id="randomizeBtn">✦ Randomize Answers</button>
-      <button type="button" id="submitBtn">Enviar Respuestas</button>
-    </div>
-    <div id="results"></div>
+  <div class="main-container">
+    
+    <section class="intro-section">
+      <h1 class="section-title">Objetivo del Curso</h1>
+      <p class="intro-text">
+        Este curso tiene como objetivo fortalecer tus habilidades de comunicación y empleabilidad, preparándote para enfrentar entrevistas, trabajar en equipo, desenvolverte con confianza y destacar en procesos de selección.
+      </p>
+    </section>
+
+    <hr class="divider">
+
+    <section class="levels-grid">
+      
+      <article class="level-card">
+        <div class="card-header">
+          <h2>Nivel Pasante</h2>
+        </div>
+        <div class="card-body">
+          <p class="level-description">
+            El Nivel Pasante es la oportunidad perfecta para comenzar tu camino profesional con seguridad y herramientas concretas. Aquí aprenderás a presentarte con claridad en entrevistas, comunicarte de manera efectiva en el trabajo y comprender los procesos de selección desde dentro.
+          </p>
+          <ul class="level-list">
+            <li>Presentación personal profesional (entrevista, eventos, LinkedIn).</li>
+            <li>Comunicación oral y escrita básica en el ámbito laboral.</li>
+            <li>Participación en procesos de selección (entrevistas individuales y grupales).</li>
+            <li>Habilidades blandas iniciales (resiliencia, adaptabilidad, comunicación asertiva).</li>
+            <li>Uso inicial de plataformas de empleo y herramientas digitales.</li>
+            <li>Ética laboral básica y reconocimiento de dilemas profesionales.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="level-card">
+        <div class="card-header">
+          <h2>Nivel Explorador</h2>
+        </div>
+        <div class="card-body">
+          <p class="level-description">
+            El Nivel Explorador te impulsa a consolidar tu identidad profesional y posicionarte estratégicamente en el mercado laboral. A lo largo del curso desarrollarás un CV competitivo, practicarás entrevistas grupales y aplicarás técnicas colaborativas.
+          </p>
+          <ul class="level-list">
+            <li>Desarrollo de identidad profesional (CV adaptado, propuesta laboral).</li>
+            <li>Comunicación profesional intermedia (correo formal, coordinación).</li>
+            <li>Análisis y participación en procesos de selección complejos.</li>
+            <li>Ética aplicada y estudio de casos (dilemas laborales, inclusión).</li>
+            <li>Herramientas digitales para gestión de proyectos.</li>
+            <li>Resolución de conflictos y mediación básica.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="level-card">
+        <div class="card-header">
+          <h2>Nivel Líder</h2>
+        </div>
+        <div class="card-body">
+          <p class="level-description">
+            El Nivel Líder está diseñado para quienes buscan destacarse con una presencia profesional sólida, estratégica y orientada al liderazgo. Desarrollarás habilidades avanzadas de negociación, comunicación persuasiva y resolución de conflictos.
+          </p>
+          <ul class="level-list">
+            <li>Presentación profesional avanzada y marca personal.</li>
+            <li>Liderazgo aplicado (gestión de equipos, toma de decisiones).</li>
+            <li>Comunicación avanzada (negociación, persuasión).</li>
+            <li>Gestión del cambio y liderazgo en crisis.</li>
+            <li>Resolución de conflictos organizacionales y protocolos formales.</li>
+            <li>Diseño y defensa de proyectos estratégicos.</li>
+          </ul>
+        </div>
+      </article>
+
+    </section>
   </div>
 
-  <script src="questions.js"></script>
-  <script src="disc.js"></script>
-  <script>
-    // Modal de Bienvenida
-    document.addEventListener('DOMContentLoaded', function() {
-      const modal = document.getElementById('welcomeModal');
-      const closeModal = document.getElementById('closeModal');
-      const startTestBtn = document.getElementById('startTestBtn');
+  <footer style="text-align: center; margin-top: 40px; color: #8892b0; font-size: 0.9em;">
+    <p>&copy; 2026 Professional Landing - Duoc UC Plaza Oeste</p>
+  </footer>
 
-      // Mostrar modal al cargar la página
-      modal.style.display = 'flex';
-
-      // Cerrar modal al hacer clic en X
-      closeModal.addEventListener('click', function() {
-        modal.style.display = 'none';
-      });
-
-      // Cerrar modal al hacer clic en "Comenzar Test"
-      startTestBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-      });
-
-      // Cerrar modal al hacer clic fuera del contenido
-      modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-          modal.style.display = 'none';
-        }
-      });
-
-      // Cerrar modal con tecla ESC
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.style.display === 'flex') {
-          modal.style.display = 'none';
-        }
-      });
-    });
-  </script>
 </body>
 </html>
