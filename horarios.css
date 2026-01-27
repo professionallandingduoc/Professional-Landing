@@ -1,0 +1,115 @@
+/* horarios.css */
+
+/* Grid específico para centrar las tarjetas si son pocas */
+.schedules-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.schedule-card {
+  background: rgba(26, 35, 50, 0.95);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  width: 100%;
+  max-width: 400px;
+  transition: transform 0.3s ease;
+}
+
+.schedule-card:hover {
+  transform: translateY(-5px);
+  border-color: #00d4ff;
+  box-shadow: 0 8px 30px rgba(0, 212, 255, 0.15);
+}
+
+.schedule-header {
+  background: linear-gradient(135deg, #0a1929, #16213e);
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.schedule-header h2 {
+  color: #00d4ff;
+  font-size: 1.8em;
+  margin: 0 0 10px 0;
+}
+
+.badge {
+  background: rgba(0, 212, 255, 0.15);
+  color: #e0e0e0;
+  padding: 5px 15px;
+  border-radius: 20px;
+  display: inline-block;
+  font-size: 0.9em;
+  font-weight: bold;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.schedule-body {
+  padding: 30px;
+  text-align: center;
+}
+
+.time-slot {
+  margin-bottom: 25px;
+}
+
+.time-slot .day {
+  display: block;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 5px;
+}
+
+.time-slot .hour {
+  font-size: 1.2em;
+  color: #00d4ff;
+}
+
+.modality-box {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.modality-box .icon {
+  display: block;
+  font-size: 1.5em;
+  margin-bottom: 5px;
+}
+
+.modality-box strong {
+  display: block;
+  color: #cbd5e0;
+  margin-bottom: 5px;
+}
+
+.modality-box p {
+  margin: 0;
+  font-size: 0.9em;
+  color: #8892b0;
+}
+
+/* Estilo para el botón activo en el menú */
+.nav-button.active-page {
+  background: #fff;
+  color: #0a1929;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.back-link {
+  color: #8892b0;
+  text-decoration: none;
+  font-size: 1.1em;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: #00d4ff;
+}
