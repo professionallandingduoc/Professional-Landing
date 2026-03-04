@@ -838,8 +838,15 @@
         <div id="jobOffersList" class="job-offers-list" aria-live="polite"></div>
       </div>
     </div>
+
+    
+
   </div>
 
+  <div style="text-align: center; margin-top: 20px;">
+      <a href="index.html" class="back-link">← Volver al Inicio</a>
+  </div>
+  
   <script src="patrones.js"></script>
   <script src="job-offers.js"></script>
   <script>
@@ -1424,7 +1431,9 @@ Código: ${segments ? `${segments.D}${segments.I}${segments.S}${segments.C}` : '
           escuela: escuela || 'N/A',
           carrera: carrera || 'N/A',
           patron_name: patron.nombre || 'N/A',
+          patron_description: patron.descripcion || 'N/A', // <-- AGREGAR ESTA LÍNEA
           nivel_onboarding: patron.nivel_onboarding || 'N/A',
+          aprendizajes_esperados: patron.aprendizajes_esperados || 'N/A', // <-- AGREGAR ESTA LÍNEA
           full_content: formatPatronForEmail(nombre, apellido, rut, escuela, carrera, patron, segments),
           segments: segments ? `D: ${segments.D}, I: ${segments.I}, S: ${segments.S}, C: ${segments.C}` : 'N/A',
           code: segments ? `${segments.D}${segments.I}${segments.S}${segments.C}` : 'N/A'
@@ -1655,5 +1664,10 @@ Código: ${segments ? `${segments.D}${segments.I}${segments.S}${segments.C}` : '
     }
 
   </script>
+
+  
+  
 </body>
+
+
 </html>
