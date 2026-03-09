@@ -385,28 +385,63 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  document.getElementById("randomizeBtn").addEventListener("click", () => {
-    for (let i = 1; i <= totalGroups; i++) {
-      const masOptions = Array.from(form.querySelectorAll(`input[name="more_${i}"]`));
-      const menosOptions = Array.from(form.querySelectorAll(`input[name="less_${i}"]`));
-      const masIndex = Math.floor(Math.random() * 4);
-      let menosIndex;
-      do { menosIndex = Math.floor(Math.random() * 4); } while (menosIndex === masIndex);
-      masOptions[masIndex].checked = true;
-      menosOptions[menosIndex].checked = true;
-    }
-    updateScoreCounter();
-  });
+  // --- BOTÓN RANDOMIZE: ahora verifica si existe antes de asignar el evento ---
+  const randomizeBtn = document.getElementById("randomizeBtn");
+  if (randomizeBtn) {
+    randomizeBtn.addEventListener("click", () => {
+      for (let i = 1; i <= totalGroups; i++) {
+        const masOptions = Array.from(form.querySelectorAll(`input[name="more_${i}"]`));
+        const menosOptions = Array.from(form.querySelectorAll(`input[name="less_${i}"]`));
+        const masIndex = Math.floor(Math.random() * 4);
+        let menosIndex;
+        do { menosIndex = Math.floor(Math.random() * 4); } while (menosIndex === masIndex);
+        masOptions[masIndex].checked = true;
+        menosOptions[menosIndex].checked = true;
+      }
+      updateScoreCounter();
+    });
+  }
 
+  // --- BOTÓN SUBMIT: Agrupa errores y valida todo antes de enviar ---
   document.getElementById("submitBtn").addEventListener("click", e => {
     e.preventDefault();
     const results = { ...initialBaseScores };
 
+    // Arrays para guardar los errores
+    const gruposIncompletos = [];
+    const gruposInvalidos = [];
+
+    // 1. Revisar todos los grupos en busca de errores
     for (let i = 1; i <= totalGroups; i++) {
       const more = form.querySelector(`input[name="more_${i}"]:checked`);
       const less = form.querySelector(`input[name="less_${i}"]:checked`);
-      if (!more || !less) return alert(`Selecciona ambos "Más" y "Menos" para el grupo ${i}`);
-      if (more.value === less.value) return alert(`No puedes elegir el mismo tipo para "Más" y "Menos" en el grupo ${i}`);
+      
+      if (!more || !less) {
+        gruposIncompletos.push(i);
+      } else if (more.value === less.value) {
+        gruposInvalidos.push(i);
+      }
+    }
+
+    // 2. Si hay errores, armar el mensaje y detener el envío
+    if (gruposIncompletos.length > 0 || gruposInvalidos.length > 0) {
+      let mensajeError = "No podemos procesar tu test todavía. Por favor revisa lo siguiente:\n\n";
+      
+      if (gruposIncompletos.length > 0) {
+        mensajeError += `► Te falta seleccionar "Más" y/o "Menos" en los grupos: ${gruposIncompletos.join(", ")}.\n`;
+      }
+      
+      if (gruposInvalidos.length > 0) {
+        mensajeError += `► Elegiste la misma opción para "Más" y "Menos" en los grupos: ${gruposInvalidos.join(", ")}.`;
+      }
+      
+      return alert(mensajeError);
+    }
+
+    // 3. Si todo está correcto, calculamos los puntajes finales
+    for (let i = 1; i <= totalGroups; i++) {
+      const more = form.querySelector(`input[name="more_${i}"]:checked`);
+      const less = form.querySelector(`input[name="less_${i}"]:checked`);
       results[more.value]++;
       results[less.value]--;
     }
