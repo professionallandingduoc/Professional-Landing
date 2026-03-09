@@ -48,6 +48,20 @@
     </div>
   </div>
 
+  <div id="errorModal" class="modal" style="display: none;">
+    <div class="modal-content" style="border-top: 4px solid #e74c3c;">
+      <div class="modal-header">
+        <h2 style="color: #e74c3c;">Faltan respuestas</h2>
+        <button class="modal-close" id="closeErrorModal">&times;</button>
+      </div>
+      <div class="modal-body" style="white-space: pre-wrap; font-size: 1.1em; line-height: 1.5;" id="errorModalBody">
+        </div>
+      <div style="text-align: center; margin-top: 20px; padding-bottom: 20px;">
+        <button class="nav-button" id="understandErrorBtn" style="background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px;">Entendido</button>
+      </div>
+    </div>
+  </div>
+
   <div class="container">
     <p class="subtitle" style="text-align: center;"><strong>Seleccione</strong> la cualidad que le <strong>represente</strong> en <strong>mayor</strong> y <strong>menor</strong> grado en cada uno de los 28 grupos.</p>
 
@@ -66,36 +80,40 @@
   <script src="questions.js"></script>
   <script src="disc.js"></script>
   <script>
-    // Modal de Bienvenida
+    // Control de Modales
     document.addEventListener('DOMContentLoaded', function() {
-      const modal = document.getElementById('welcomeModal');
-      const closeModal = document.getElementById('closeModal');
+      // --- Modal de Bienvenida ---
+      const welcomeModal = document.getElementById('welcomeModal');
+      const closeWelcome = document.getElementById('closeModal');
       const startTestBtn = document.getElementById('startTestBtn');
 
-      // Mostrar modal al cargar la página
-      modal.style.display = 'flex';
+      if (welcomeModal) welcomeModal.style.display = 'flex';
 
-      // Cerrar modal al hacer clic en X
-      closeModal.addEventListener('click', function() {
-        modal.style.display = 'none';
+      if (closeWelcome) closeWelcome.addEventListener('click', () => welcomeModal.style.display = 'none');
+      if (startTestBtn) startTestBtn.addEventListener('click', () => welcomeModal.style.display = 'none');
+
+      // --- Modal de Error ---
+      const errorModal = document.getElementById('errorModal');
+      const closeError = document.getElementById('closeErrorModal');
+      const understandBtn = document.getElementById('understandErrorBtn');
+
+      const hideErrorModal = () => {
+        if (errorModal) errorModal.style.display = 'none';
+      };
+
+      if (closeError) closeError.addEventListener('click', hideErrorModal);
+      if (understandBtn) understandBtn.addEventListener('click', hideErrorModal);
+
+      // --- Cerrar modales al hacer clic fuera o con ESC ---
+      window.addEventListener('click', function(e) {
+        if (e.target === welcomeModal) welcomeModal.style.display = 'none';
+        if (e.target === errorModal) errorModal.style.display = 'none';
       });
 
-      // Cerrar modal al hacer clic en "Comenzar Test"
-      startTestBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-      });
-
-      // Cerrar modal al hacer clic fuera del contenido
-      modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-          modal.style.display = 'none';
-        }
-      });
-
-      // Cerrar modal con tecla ESC
       document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.style.display === 'flex') {
-          modal.style.display = 'none';
+        if (e.key === 'Escape') {
+          if (welcomeModal && welcomeModal.style.display === 'flex') welcomeModal.style.display = 'none';
+          if (errorModal && errorModal.style.display === 'flex') errorModal.style.display = 'none';
         }
       });
     });

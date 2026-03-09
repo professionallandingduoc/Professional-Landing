@@ -423,7 +423,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // 2. Si hay errores, armar el mensaje y detener el envío
+    // 2. Si hay errores, armar el mensaje y MOSTRAR EL MODAL
     if (gruposIncompletos.length > 0 || gruposInvalidos.length > 0) {
       let mensajeError = "No podemos procesar tu test todavía. Por favor revisa lo siguiente:\n\n";
       
@@ -435,7 +435,19 @@ document.addEventListener("DOMContentLoaded", () => {
         mensajeError += `► Elegiste la misma opción para "Más" y "Menos" en los grupos: ${gruposInvalidos.join(", ")}.`;
       }
       
-      return alert(mensajeError);
+      // Llamamos al modal en lugar del alert nativo
+      const errorModal = document.getElementById('errorModal');
+      const errorModalBody = document.getElementById('errorModalBody');
+      
+      if (errorModal && errorModalBody) {
+        errorModalBody.textContent = mensajeError;
+        errorModal.style.display = 'flex';
+      } else {
+        // Fallback por si acaso el modal no carga en el HTML
+        alert(mensajeError);
+      }
+      
+      return; // Detener el envío
     }
 
     // 3. Si todo está correcto, calculamos los puntajes finales
